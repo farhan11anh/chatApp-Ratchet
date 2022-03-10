@@ -30,18 +30,18 @@ $user_data = $user_object->get_user_all_data();
 	<!-- auto reload tiap detik -->
 	<!-- <meta http-equiv="refresh" content="1" /> -->
 	<!-- Bootstrap core CSS -->
-    <link href="vendor-front/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 
     <link href="vendor-front/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <link rel="stylesheet" type="text/css" href="vendor-front/parsley/parsley.css"/>
 
     <!-- Bootstrap core JavaScript -->
-    <script src="vendor-front/jquery/jquery.min.js"></script>
-    <script src="vendor-front/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor-front/jquery-easing/jquery.easing.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <script type="text/javascript" src="vendor-front/parsley/dist/parsley.min.js"></script>
 	<style type="text/css">
@@ -84,9 +84,9 @@ $user_data = $user_object->get_user_all_data();
 
 		.chat-box
 		{
-			width: 400px;
+			width: 100px;
 			height: 100px;
-			background-color: blue;
+			background-color: #007bff;
 			position: absolute;
 			border-radius: 200px;
 			text-align: center;
@@ -116,27 +116,11 @@ $user_data = $user_object->get_user_all_data();
 		}
 		.chatroom
 		{
-			display: none;
-			max-width: 400px;
-			margin-left: auto;
-			margin-right: auto;
-			animation-name: apear;
-			animation-duration: 1s;
-			position: relative;
-
+			display: block;
+			max-width: 100%;
+			height: 100%;
 		}
-		@keyframes apear
-		{
-			from {
-				top: 100px;
-				display: block;
 
-			}
-			to {
-				top: 0px;
-				display: none;
-			}
-		}
 		.hidencht
 		{
 			display: block;
@@ -155,13 +139,91 @@ $user_data = $user_object->get_user_all_data();
 			width: 0px;
 			background: #000;
 		}
+		.ballon-chat {
+			margin: 10px;
+		}
 
 	</style>
 </head>
 <body>
-	<div class="chat-box">
-		chat
+	<div class="chat-box" data-toggle="modal" data-target="#staticBackdrop">
+		<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-chat-quote-fill" viewBox="0 0 16 16">
+			<path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM7.194 6.766a1.688 1.688 0 0 0-.227-.272 1.467 1.467 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 5.734 6C4.776 6 4 6.746 4 7.667c0 .92.776 1.666 1.734 1.666.343 0 .662-.095.931-.26-.137.389-.39.804-.81 1.22a.405.405 0 0 0 .011.59c.173.16.447.155.614-.01 1.334-1.329 1.37-2.758.941-3.706a2.461 2.461 0 0 0-.227-.4zM11 9.073c-.136.389-.39.804-.81 1.22a.405.405 0 0 0 .012.59c.172.16.446.155.613-.01 1.334-1.329 1.37-2.758.942-3.706a2.466 2.466 0 0 0-.228-.4 1.686 1.686 0 0 0-.227-.273 1.466 1.466 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 10.07 6c-.957 0-1.734.746-1.734 1.667 0 .92.777 1.666 1.734 1.666.343 0 .662-.095.931-.26z"/>
+		</svg>
 	</div>
+
+	<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="chatroom">
+				<div class="card">
+					<div class="card-header">
+						<div class="row">
+							<div class="col col-sm-6">
+								<h3>Chat Room</h3>
+							</div>
+							<div class="col col-sm-6 text-right">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+					<div class="card-body" id="messages_area">
+					<?php
+					foreach($chat_data as $chat)
+					{
+						if(isset($_SESSION['user_data'][$chat['userid']]))
+						{
+							$position = 'text-right';
+							$from = 'Me';
+							$row_class = 'row justify-content-end';
+							$background_class = 'text-dark alert-light';
+						}
+						else
+						{	
+							$position = 'text-left';
+							$from = $chat['user_name'];
+							$row_class = 'row justify-content-start';
+							$background_class = 'alert-success';
+						}
+
+						echo '
+						<div class="'.$row_class.'">
+							<div class="ballon-chat">
+								<div class="shadow-sm alert '.$background_class.'">
+									<div class="'.$position.'">
+										<b>'.$from.'</b> <br>
+										'.$chat["msg"].'
+									</div>
+									<div class="'.$position.'">
+										<small class="'.$position.'"><i>'.$chat["created_on"].'</i></small>
+									</div>
+								</div>
+							</div>
+						</div>
+						';
+					}
+					?>
+					</div>
+				</div>
+
+				<form method="post" id="chat_form" data-parsley-errors-container="#validation_error">
+					<div class="input-group mb-3">
+						<input class="form-control" id="chat_message" name="chat_message" placeholder="Type Message Here" data-parsley-maxlength="1000" data-parsley-pattern="/^[a-zA-Z0-9\s]+$/" required></input>
+						<div class="input-group-append">
+							<button type="submit" name="send" id="send" class="btn btn-primary" style="width:100px">Kirim</button>
+						</div>
+					</div>
+					<div id="validation_error"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+	</div>
+
+
+
+
+
 	<div class="close">
 		X
 	</div>
@@ -232,6 +294,7 @@ $user_data = $user_object->get_user_all_data();
 
 			</div>
 			
+			aa
 			<div class="col-lg-8 chatroom">
 				<div class="card">
 					<div class="card-header">
@@ -250,14 +313,14 @@ $user_data = $user_object->get_user_all_data();
 					{
 						if(isset($_SESSION['user_data'][$chat['userid']]))
 						{
-							$position = 'text-left';
+							$position = 'text-right';
 							$from = 'Me';
 							$row_class = 'row justify-content-end';
 							$background_class = 'text-dark alert-light';
 						}
 						else
 						{	
-							$position = 'text-right';
+							$position = 'text-left';
 							$from = $chat['user_name'];
 							$row_class = 'row justify-content-start';
 							$background_class = 'alert-success';
@@ -272,7 +335,7 @@ $user_data = $user_object->get_user_all_data();
 										'.$chat["msg"].'
 									</div>
 									<div class="'.$position.'">
-										<small><i>'.$chat["created_on"].'</i></small>
+										<small class="'.$position.'"><i>'.$chat["created_on"].'</i></small>
 									</div>
 								</div>
 							</div>
@@ -303,8 +366,13 @@ $user_data = $user_object->get_user_all_data();
 	
 	$(document).ready(function(){
 
+
+		$(".chat-box").click(function() {
+            $('#messages_area').scrollTop($('#messages_area')[0].scrollHeight);
+        });
+
 		// inisialisai port yang digunakan dalam chat
-		var conn = new WebSocket('ws://localhost:8080');
+		var conn = new WebSocket('ws://192.168.18.72:8080');
 		conn.onopen = function(e) {
 		    console.log("Connection established!");
 		};
@@ -324,14 +392,16 @@ $user_data = $user_object->get_user_all_data();
 		    {
 		    	row_class = 'row justify-content-end';
 		    	background_class = 'text-dark alert-light';
+				position = 'text-right'
 		    }
 		    else
 		    {
-		    	row_class = 'row justify-content-end';
+		    	row_class = 'row justify-content-start';
 		    	background_class = 'alert-success';
+				position = 'text-left';
 		    }
 
-		    var html_data = "<div class='"+row_class+"'><div class='col-sm-10'><div class='shadow-sm alert "+background_class+"'><b>"+data.from+" - </b>"+data.msg+"<br /><div class='text-right'><small><i>"+data.dt+"</i></small></div></div></div></div>";
+		    var html_data = "<div class='"+row_class+"'><div class='ballon-chat'><div class='shadow-sm alert "+background_class+"'><div class='"+position+"' ><b>"+data.from+"</b><br>"+data.msg+"</div><div class='"+position+"'><small><i>"+data.dt+"</i></small></div></div></div></div>";
 
 		    $('#messages_area').append(html_data);
 
@@ -340,7 +410,7 @@ $user_data = $user_object->get_user_all_data();
 
 		$('#chat_form').parsley();
 
-		$('#messages_area').scrollTop($('#messages_area')[0].scrollHeight);
+		$('#messages_area').scrollTop($('#messages_area').height());
 
 		// mengirimkan pesan dan menyimpan pada database
 		$('#chat_form').on('submit', function(event){
@@ -400,37 +470,36 @@ $user_data = $user_object->get_user_all_data();
 
 		});
 
+		$('.card-body').scrollTop($('.card-body')[0].scrollHeight);
+
 	});
 	
 </script>
 
 <script>
+	chat.scrollTop = chat.scrollHeight;
 
-	// variabel untuk tiap komponen
-	const chatbox = document.querySelector('.chat-box');
-	const close = document.querySelector('.close');
-	const chatroom = document.querySelector('.chatroom');
-
-	chatbox.addEventListener('click', function(){
-		chatroom.classList.add('showCt');
-		close.classList.add('hidencht')
-		chatbox.style.display="none";
-	});
-
-	close.addEventListener('click', function(){
-		chatroom.classList.remove('showCt');
-		close.classList.remove('hidencht');
-		chatbox.style.display="block";
+	const chat = document.querySelector('.card-body');
+	const bt = document.querySelector('.chat-box');
+	const scroll = function(){
+		return chat.scrollTop = chat.scrollHeight;
+	} 
+	chat.addEventListener('click', function(){
+		const scroll = chat.scrollTop = chat.scrollHeight;
+		setInterval(scroll(), 1000);
+		
 	})
 
 
-	setInterval(function(){
-		$('#user_list').load(window.location.href + ' #user_list')
-	}, 100)
-
-
-
 </script>
+
+<script>
+        $(document).ready(function() {
+            $(".card-body").click(function() {
+                $('.chat-box').scrollTop($('.chat-box').height());
+            });
+        });
+    </script>
 
 
 </html>
